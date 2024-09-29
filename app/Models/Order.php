@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -34,5 +35,12 @@ class Order extends Model
     public function address()
     {
         return $this->hasOne(Address::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($order) {
+            $order->user_id = Auth::id();
+        });
     }
 }
